@@ -57,12 +57,15 @@ export const TaskList: React.FC<props> = ({
 
   const handleDelete = async (taskId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/tasks/${taskId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://task-manager-backend-4zd9.onrender.com/tasks/${taskId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -71,35 +74,30 @@ export const TaskList: React.FC<props> = ({
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
-
+    console.log(result);
     const updatedTasks = Array.from(tasks);
     const [movedTask] = updatedTasks.splice(result.source.index, 1);
     updatedTasks.splice(result.destination.index, 0, movedTask);
 
-    let newStatus = movedTask.priority;
-    if (result.destination.droppableId === "done") {
-      newStatus = "Completed";
-    } else if (result.destination.droppableId === "inProgress") {
-      newStatus = "In Progress";
-    } else if (result.destination.droppableId === "toDo") {
-      newStatus = "To Do";
-    }
+    movedTask.status = result.destination.droppableId;
 
-    movedTask.priority = newStatus;
+    if (movedTask.status === "Done") {
+      movedTask.priority = "Completed";
+    }
     setTasks(updatedTasks);
 
     // Function to update the task in the backend
     const updateTaskInBackend = async (task: Task) => {
       try {
         const response = await fetch(
-          `http://localhost:8080/tasks/${task._id}`,
+          `https://task-manager-backend-4zd9.onrender.com/tasks/${task._id}`,
           {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              status: newStatus,
+              movedTask,
               priority: movedTask.priority,
             }),
           }
@@ -116,6 +114,7 @@ export const TaskList: React.FC<props> = ({
     // Call the function to update the task in the backend
     await updateTaskInBackend(movedTask);
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={ListName}>

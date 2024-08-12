@@ -3,11 +3,11 @@ import "./App.css";
 import { MainTaskTypes } from "./components/TaskTypes";
 import { Navigation } from "./components/Navigation";
 import { FaPlus } from "react-icons/fa6";
-import Task from "./model";
+import Task from "./components/model";
 import { TaskList } from "./components/TaskList";
-import { CreateTask } from "./CreateTask";
-import Calendar from "./Calendar";
-import Success from "./sucess";
+import { CreateTask } from "./components/CreateTask";
+import Calendar from "./components/Calendar";
+import Success from "./components/sucess";
 
 export const initialState = {
   name: "",
@@ -28,7 +28,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const response = await fetch("http://localhost:8080/tasks/", {
+        const response = await fetch("https://task-manager-backend-4zd9.onrender.com/tasks/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -51,8 +51,8 @@ export const CreateTask: React.FC<props> = ({
 
   const handleAssignedToClick = async () => {
     const url = editingTask
-      ? `http://localhost:8080/tasks/${editingTask._id}`
-      : "http://localhost:8080/tasks/";
+      ? `https://task-manager-backend-4zd9.onrender.com/tasks/${editingTask._id}`
+      : "https://task-manager-backend-4zd9.onrender.com/tasks/";
     const method = editingTask ? "PATCH" : "POST";
 
     try {

@@ -7,7 +7,6 @@ import connectDB from "./db/connect";
 dotenv.config();
 const app:Express = express();
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
