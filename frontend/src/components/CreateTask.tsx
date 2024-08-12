@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Task from "./model";
 import { FaPlus } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { initialState } from "./App";
+import { initialState } from "../App";
 
 interface props {
   formState: typeof initialState;

@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.css";
 import { FaPlus } from "react-icons/fa";
-import Task from "../model"; // Assuming Task is imported from a model file
+import Task from "./model"; // Assuming Task is imported from a model file
 
 interface props {
   icon: string;

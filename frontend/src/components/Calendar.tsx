@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
-import { initialState } from "./App";
+import { initialState } from "../App";
 
 interface props {
   formState: typeof initialState;

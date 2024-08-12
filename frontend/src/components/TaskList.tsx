@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Task from "../model";
+import Task from "./model";
 import { BsThreeDots } from "react-icons/bs";
 import {
   DragDropContext,
