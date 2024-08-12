@@ -1,0 +1,572 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap');
+
+:root{
+    --background-color: #ECEDEE
+}
+*{
+    box-sizing: border-box;
+    
+}
+*::-webkit-scrollbar{
+    display: none;
+}
+
+body{
+    margin: 0px;
+    font-family: poppins, sans-serif;
+}
+
+input:focus{
+    outline: none;
+}
+textarea:focus{
+    outline: none;
+}   
+
+.navigation{
+    margin: 50px 21px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    border-radius: 20px;
+    background-color:var(--background-color) ;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    max-width: 1519px;
+}
+
+.search-bar{
+    border-radius: 22px;
+    width: 308px;
+    padding: 12px;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-bar input {
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    color: #5A5A5A;
+    opacity: 64%;
+}
+.search-bar input :active{
+    border: none;
+}
+
+.filter-button {
+    background-color: white;
+    border: 1px solid #625F6D;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #797979;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+
+/* --------------------------------------App.tsx---------------------------------------- */
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+    gap: 54px;
+}
+
+.main-task-types {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-left: 21px;
+}
+
+.add-task-btn {
+    border: none;
+    background-color: #0D062D;
+    color: white;
+    padding: 15px 0px;
+    border-radius: 19px;
+    width: 235px;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 64px;
+    cursor: pointer;
+}
+
+.main-task-lists{
+    margin-right: 21px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 54px;
+
+}
+
+
+/* --------------------------------------Task Types---------------------------------------- */
+
+.task-type-container{
+    border-radius: 14px;
+    background-color: var(--background-color);
+    max-width: 268px;
+    max-height: 196px;
+    padding: 18px ;
+    display: flex;
+    flex-direction: column;
+    color: #797979;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.task-type-image{
+    width: 46px;
+    height: 46px;
+}
+
+.num-tasks{
+    color: #060606;
+    font-weight: 500;
+    font-size: 28px;
+    margin-top: 10px;
+}
+
+.total-num-span{
+    font-size: 14px;
+    line-height: 24px;
+}
+
+
+/* --------------------------------------Task Lists---------------------------------------- */
+
+.task-list-fixed-part {
+    position: sticky;
+    top: 0;
+    background-color: var(--background-color); 
+    z-index: 1; 
+}
+
+.task-list-container{
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    max-height: 668px;
+    overflow-y: auto;
+    position: relative;
+    min-width: 300px;
+}
+
+.task-list-heading{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-list-name{
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.list-task-num{
+    background-color: #E0E0E0;
+    color: #625F6D;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14.52px;
+    border-radius: 10px;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-container{
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.task-item{
+    max-width: 314px;
+    padding: 20px;
+    padding-bottom: 10px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
+    max-width: 314px;
+}
+
+.task-item-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -20px;
+    font-size: 12px;
+}
+
+.task-priority{
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-weight: 500;
+    font-size: 12px;
+
+}
+
+.task-item-name{
+    color: #0D062D;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+.task-item-description{
+    font-weight: 400px;
+    font-size: 12px;
+    color: #787486;
+    margin-top: -10px;
+    margin-bottom: 32px;
+}
+
+.deadline-text{
+    color: #5A5A5A;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.item-deadline{
+    font-weight: 500;
+}
+
+.priority-high{
+    background-color: #d8727c54;
+    color: #D8727D;
+}
+
+.priority-low{
+    background-color:#dfa8747e;
+    color: #D58D49;
+}
+
+.priority-completed{
+    background-color: #83c29d34;
+    color: #68B266;
+}
+
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+    
+}
+
+.dropdown-icon {
+    cursor: pointer;
+}
+  
+.dropdown-icon:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+display: none;
+position: absolute;
+background-color: white;
+box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+z-index: 1;
+right: 0;
+border-radius: 8px;
+}
+
+.dropdown-menu p {
+padding: 8px 14px;
+cursor: pointer;
+}
+
+.dropdown-menu p:hover {
+background-color: #f1f1f1;
+}
+
+/* --------------------------------------create task form---------------------------------------- */
+
+.create-task-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+}
+
+.create-task-wrapper {
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+  
+.create-task-heading{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    border-bottom:1px solid #E1E2EA;
+}
+
+.heading-content{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.create-task-form{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+}
+
+.task-name-input-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    color: #111111;
+    width: 261px;
+
+}
+
+.task-name-input{
+    border : none;
+    color: #111111;
+    font-family: poppins, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.task-name-input::placeholder{
+    color: #111111;
+}
+
+.task-description-input{
+    border : none;
+    border-bottom: 1px solid black;
+    color: #111111;
+    width: 261px;
+    font-family: poppins, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    height: 250px;
+    width: auto;
+    resize: none;
+}
+.task-description-input::placeholder{
+    color: #111111;
+}
+
+.task-priority-dropdown {
+    width: 261px;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+    color: #111111;
+    font-family: poppins, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.task-input-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.task-input-buttons button{
+    border: none;
+    background-color: white;
+    color: #5A5A5A;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    cursor: pointer;
+
+}
+
+
+/* ---------------------------------- calendar ------------------------------------------- */
+
+.calendar-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.calendar-wrapper{
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    max-width: 500px;
+}
+
+.calendar-month{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 23px;
+
+}
+
+.calendar-month-text{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.month-change-button{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.calendar-day-header,
+.calendar-day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.calendar-day {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.calendar-day:hover{
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+}
+
+.selected-day {
+  background-color: #000000;
+  color: white;
+  border-radius: 50%;
+}
+
+
+
+/* -----------------------------------------sucess overlay------------------ */
+
+.success-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.success-wrapper{
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    max-width: 315px;
+}
+
+.done-image{
+    width: 83px;
+    height: 83px;
+    transition: 2s ease;
+}
+
+.success-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.back-btn{
+    border: 1px solid #006EE9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: black;
+    color: white;
+    padding: 14px 114px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+}
