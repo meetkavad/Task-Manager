@@ -9,6 +9,10 @@ import { CreateTask } from "./components/CreateTask";
 import Calendar from "./components/Calendar";
 import Success from "./components/sucess";
 
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
 export const initialState = {
   name: "",
   status: "To Do",
@@ -19,33 +23,99 @@ export const initialState = {
 
 const App: React.FC = () => {
   const [formState, setFormState] = useState(initialState);
-  const [tasks, setTasks] = React.useState<Task[]>([]);
-  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
-  const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
-  const [isSuccessVisible, setIsSuccessVisible] = useState<boolean>(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [isSuccessVisible, setIsSuccessVisible] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterOption, setFilterOption] = useState("all");
 
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const response = await fetch("https://task-manager-backend-4zd9.onrender.com/tasks/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (response.status === 200) {
+        const response = await fetch(
+          `${BASE_URL}/tasks/`
+        );
+        if (response.ok) {
           const data = await response.json();
           setTasks(data.tasks);
-        } else {
-          console.log("Tasks not found");
         }
       } catch (error) {
         console.error(error);
       }
     };
     getTasks();
-  }, [tasks]);
+  }, []);
+
+  // GLOBAL DRAG END
+  const onDragEnd = async (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    // If position is unchanged
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
+
+    const updatedTasks = Array.from(tasks);
+    const movedTask = updatedTasks.find((t) => t._id === draggableId);
+
+    if (!movedTask) return;
+
+    // Update status of the moved task
+    movedTask.status = destination.droppableId;
+
+    if (destination.droppableId === "Done") {
+      movedTask.priority = "Completed";
+    }
+
+    // Reorder tasks by status + index
+    updatedTasks.sort((a, b) => {
+      const order: Record<string, number> = {
+        "To Do": 1,
+        "On Progress": 2,
+        Done: 3,
+      };
+
+      return order[a.status] - order[b.status];
+    });
+
+    setTasks(updatedTasks);
+
+    // Update in backend
+    try {
+      await fetch(
+        `${BASE_URL}/tasks/${movedTask._id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(movedTask),
+        }
+      );
+    } catch (error) {
+      console.error("Failed updating backend:", error);
+    }
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch =
+      task.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    let matchesFilter = true;
+
+    if (filterOption === "low") matchesFilter = task.priority === "Low";
+    if (filterOption === "high") matchesFilter = task.priority === "High";
+    if (filterOption === "completed") matchesFilter = task.status === "Done";
+    if (filterOption === "active") matchesFilter = task.status !== "Done";
+
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div>
@@ -61,6 +131,7 @@ const App: React.FC = () => {
           setIsSuccessVisible={setIsSuccessVisible}
           editingTask={editingTask}
           setEditingTask={setEditingTask}
+          setTasks={setTasks}
         />
       )}
 
@@ -84,46 +155,59 @@ const App: React.FC = () => {
         />
       )}
 
-      <Navigation />
+      <Navigation
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setFilterOption={setFilterOption}
+      />
+
       <div className="main-container">
         <div className="main-task-types">
           <MainTaskTypes tasks={tasks} />
 
           <button
             className="add-task-btn"
-            onClick={() => setIsFormVisible(!isFormVisible)}
+            onClick={() => setIsFormVisible(true)}
           >
             <FaPlus />
             Add Task
           </button>
         </div>
 
-        <div className="main-task-lists">
-          <TaskList
-            ListName="To Do"
-            color="#5030E5"
-            tasks={tasks.filter((task) => task.status === "To Do")}
-            setTasks={setTasks}
-            setIsFormVisible={setIsFormVisible}
-            setEditingTask={setEditingTask}
-          />
-          <TaskList
-            ListName="On Progress"
-            color="#FFA500"
-            tasks={tasks.filter((task) => task.status === "On Progress")}
-            setTasks={setTasks}
-            setIsFormVisible={setIsFormVisible}
-            setEditingTask={setEditingTask}
-          />
-          <TaskList
-            ListName="Done"
-            color="#8BC48A"
-            tasks={tasks.filter((task) => task.status === "Done")}
-            setTasks={setTasks}
-            setIsFormVisible={setIsFormVisible}
-            setEditingTask={setEditingTask}
-          />
-        </div>
+        {/* GLOBAL DRAG CONTEXT */}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="main-task-lists">
+            <TaskList
+              droppableId="To Do"
+              ListName="To Do"
+              color="#5030E5"
+              tasks={filteredTasks.filter((t) => t.status === "To Do")}
+              setTasks={setTasks}
+              setIsFormVisible={setIsFormVisible}
+              setEditingTask={setEditingTask}
+            />
+
+            <TaskList
+              droppableId="On Progress"
+              ListName="On Progress"
+              color="#FFA500"
+              tasks={filteredTasks.filter((t) => t.status === "On Progress")}
+              setTasks={setTasks}
+              setIsFormVisible={setIsFormVisible}
+              setEditingTask={setEditingTask}
+            />
+
+            <TaskList
+              droppableId="Done"
+              ListName="Done"
+              color="#8BC48A"
+              tasks={filteredTasks.filter((t) => t.status === "Done")}
+              setTasks={setTasks}
+              setIsFormVisible={setIsFormVisible}
+              setEditingTask={setEditingTask}
+            />
+          </div>
+        </DragDropContext>
       </div>
     </div>
   );

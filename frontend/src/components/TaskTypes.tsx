@@ -38,11 +38,13 @@ export const MainTaskTypes: React.FC<MainTaskTypesProps> = ({ tasks }) => {
   const currentDate = new Date();
 
   const expiredTasks = tasks.filter(
-    (task) => new Date(task.deadline) < currentDate && task.status !== "done"
+    (task) => new Date(task.deadline) < currentDate && task.status !== "Done"
   );
-  const completedTasks = tasks.filter((task) => task.status === "done");
+
+  const completedTasks = tasks.filter((task) => task.status === "Done");
+
   const activeTasks = tasks.filter(
-    (task) => new Date(task.deadline) >= currentDate && task.status !== "done"
+    (task) => new Date(task.deadline) >= currentDate && task.status !== "Done"
   );
 
   return (
@@ -61,7 +63,7 @@ export const MainTaskTypes: React.FC<MainTaskTypesProps> = ({ tasks }) => {
         icon={"/images/completed.png"}
         name={"Completed Tasks"}
         num={completedTasks.length}
-        total_num={activeTasks.length}
+        total_num={completedTasks.length + activeTasks.length}
       />
     </>
   );
