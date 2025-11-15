@@ -62,16 +62,20 @@ cd Task-Manager
 Frontend Setup
 
 Move into the frontend folder:
-```cd frontend
+```
+cd frontend
 ```
 Install dependencies:
-```npm install
+```
+npm install
 ```
 Create .env file:
-```REACT_APP_BASE_URL=http://localhost:8080
+```
+REACT_APP_BASE_URL=http://localhost:8080
 ```
 Run frontend:
-```npm start
+```
+npm start
 ```
 Frontend runs at: http://localhost:3000/
 
@@ -79,19 +83,23 @@ Backend Setup
 
 Open a new terminal and go to backend folder:
 
-```cd backend
+```
+cd backend
 ```
 Install dependencies:
-```npm install
+```
+npm install
 ```
 
 Create .env file:
-```PORT=8080
+```
+PORT=8080
 MONGO_URI=your_mongodb_uri
 ```
 
 Run backend:
-```npm run dev
+```
+npm run dev
 ```
 
 Backend runs at: http://localhost:8080/
