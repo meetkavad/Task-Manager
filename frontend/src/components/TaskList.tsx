@@ -13,7 +13,7 @@ interface props {
   setEditingTask: React.Dispatch<React.SetStateAction<Task | null>>;
 }
 
-const BASE_URL = process.env.REACT_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const TaskList: React.FC<props> = ({
   droppableId,
@@ -54,12 +54,9 @@ export const TaskList: React.FC<props> = ({
 
   const handleDelete = async (taskId: string) => {
     try {
-      await fetch(
-        `${BASE_URL}/tasks/${taskId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      await fetch(`${BASE_URL}/tasks/${taskId}`, {
+        method: "DELETE",
+      });
 
       // Update UI instantly
       setTasks((prev) => prev.filter((t) => t._id !== taskId));
@@ -105,7 +102,11 @@ export const TaskList: React.FC<props> = ({
                     {...provided.dragHandleProps}
                   >
                     <div className="task-item-top">
-                      <p className={`task-priority ${getPriorityClass(task.priority)}`}>
+                      <p
+                        className={`task-priority ${getPriorityClass(
+                          task.priority
+                        )}`}
+                      >
                         {task.priority}
                       </p>
 
@@ -123,7 +124,9 @@ export const TaskList: React.FC<props> = ({
                           {dropdownVisible === task._id && (
                             <div className="dropdown-menu">
                               <p onClick={() => handleEdit(task)}>Edit</p>
-                              <p onClick={() => handleDelete(task._id)}>Delete</p>
+                              <p onClick={() => handleDelete(task._id)}>
+                                Delete
+                              </p>
                             </div>
                           )}
                         </div>

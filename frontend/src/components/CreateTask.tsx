@@ -18,7 +18,7 @@ interface props {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-const BASE_URL = process.env.REACT_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const CreateTask: React.FC<props> = ({
   formState,

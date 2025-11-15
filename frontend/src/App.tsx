@@ -12,7 +12,6 @@ import Success from "./components/sucess";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-
 export const initialState = {
   name: "",
   status: "To Do",
@@ -35,9 +34,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/tasks/`
-        );
+        const response = await fetch(`${BASE_URL}/tasks/`);
         if (response.ok) {
           const data = await response.json();
           setTasks(data.tasks);
@@ -89,14 +86,11 @@ const App: React.FC = () => {
 
     // Update in backend
     try {
-      await fetch(
-        `${BASE_URL}/tasks/${movedTask._id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(movedTask),
-        }
-      );
+      await fetch(`${BASE_URL}/tasks/${movedTask._id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movedTask),
+      });
     } catch (error) {
       console.error("Failed updating backend:", error);
     }
